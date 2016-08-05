@@ -1,21 +1,22 @@
-FROM nginx:stable
+FROM electronuserland/electron-builder:4
 
 RUN apt-get update \
   && apt-get install --no-install-recommends --no-install-suggests -y \
-  apache2-utils \
+  git jq openssh-client \
   && rm -rf /var/lib/apt/lists/*
 
-COPY helpers.conf /etc/nginx/helpers.conf
-COPY proxy.conf server.conf location.conf /etc/nginx/
-COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN mkdir -p /root/.ssh &>/dev/null && ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
 
-RUN chmod +x /docker-entrypoint.sh
+# libgnome-keyring-dev — to build keytar
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F9CB8DB0 && \
+echo "deb http://ppa.launchpad.net/ubuntu-wine/ppa/ubuntu xenial main " | tee /etc/apt/sources.list.d/wine.list && \
+dpkg --add-architecture i386 && \
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF && \
+echo "deb http://download.mono-project.com/repo/debian wheezy main" | tee /etc/apt/sources.list.d/mono-xamarin.list && \
+apt-get update -y && \
+apt-get install -y --no-install-recommends wine1.8 mono-devel ca-certificates-mono && \
+apt-get clean && rm -rf /var/lib/apt/lists/*
 
-ENV PROXY_USERNAME="admin"
-ENV PROXY_PASSWORD="admin"
-ENV PROXY_PASSTHROUGH=""
-ENV PROXY_HOST="_"
+ENV WINEDEBUG -all,err+all
 
-EXPOSE 80
-
-CMD ["/docker-entrypoint.sh"]
+RUN wineboot --init || true
