@@ -5,9 +5,6 @@ RUN apt-get update \
   git jq openssh-client \
   && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /root/.ssh
-RUN ssh-keyscan -t rsa github.com >> /root/.ssh/known_hosts
-
 # libgnome-keyring-dev — to build keytar
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F9CB8DB0 && \
 echo "deb http://ppa.launchpad.net/ubuntu-wine/ppa/ubuntu xenial main " | tee /etc/apt/sources.list.d/wine.list && \
