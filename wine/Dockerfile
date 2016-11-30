@@ -51,6 +51,10 @@ ENV PATH "$HOME/.yarn/bin:$PATH"
 
 
 
+
+
+
+
 ENV NODE_VERSION 6.9.1
 
 # https://github.com/npm/npm/issues/4531
@@ -61,6 +65,9 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
   && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/local --strip-components=1 \
   && rm "node-v$NODE_VERSION-linux-x64.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
   && curl -L https://npmjs.org/install.sh | sh && npm cache clean && npm config set unsafe-perm true && npm completion >> ~/.bashrc
+
+
+
 
 
 
