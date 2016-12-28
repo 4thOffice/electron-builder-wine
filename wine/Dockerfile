@@ -55,7 +55,7 @@ ENV PATH "$HOME/.yarn/bin:$PATH"
 
 
 
-ENV NODE_VERSION 6.9.1
+ENV NODE_VERSION 6.5.0
 
 # https://github.com/npm/npm/issues/4531
 RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
